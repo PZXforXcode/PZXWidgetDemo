@@ -14,7 +14,8 @@ class ViewController: UIViewController {
             //testlabel下面加个按钮
             let testButton = UIButton(frame: CGRect(x: 100, y: 150, width: 200, height: 50))
 
-    let sharedDefaults = UserDefaults(suiteName: "group.dd.work.exclusive4loncin")
+    // 通过 App Group 共享状态，Widget 与 App 读写同一份数据
+    let sharedDefaults = UserDefaults(suiteName: WidgetConstants.appGroupIdentifier)
 
     let loadingLabel = UILabel(frame: CGRect(x: 100, y: 200, width: 200, height: 50))
     let flashingLabel = UILabel(frame: CGRect(x: 100, y: 250, width: 200, height: 50))
@@ -45,12 +46,14 @@ class ViewController: UIViewController {
         // 监听 App 回到前台，刷新数据
         NotificationCenter.default.addObserver(self, selector: #selector(updateLabel), name: UIApplication.willEnterForegroundNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFlashUI), name: Notification.Name("TriggerFlashUI"), object: nil)
+        // 监听 SceneDelegate 转发的通知，展示闪灯动画
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFlashUI), name: .triggerFlashUI, object: nil)
         
         setupFlashUI()
     }
     
     func setupFlashUI() {
+        // UI 配置：先准备两个 Label，后续仅切换显示状态
         loadingLabel.text = "正在开启闪灯"
         loadingLabel.textColor = .orange
         loadingLabel.font = UIFont.systemFont(ofSize: 18)
@@ -65,13 +68,13 @@ class ViewController: UIViewController {
     }
 
     @objc func handleFlashUI() {
-        // Reset state
+        // 收到闪灯通知后，先展示 Loading，再展示闪烁 Label
         loadingLabel.isHidden = false
         flashingLabel.isHidden = true
         flashingLabel.layer.removeAllAnimations()
         flashingLabel.alpha = 1.0
         
-        // 2s loading
+        // 2s loading，模拟设备准备时间
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             guard let self = self else { return }
             self.loadingLabel.isHidden = true
@@ -82,7 +85,7 @@ class ViewController: UIViewController {
                 self.flashingLabel.alpha = 0.1
             }, completion: nil)
             
-            // 2s flashing then stop
+            // 2s flashing then stop，模拟闪灯过程结束
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
                 guard let self = self else { return }
                 self.flashingLabel.layer.removeAllAnimations()
@@ -94,14 +97,14 @@ class ViewController: UIViewController {
 
     @objc func testButtonClick() {
         // 主 App 点击按钮也可以改变状态
-        let current = sharedDefaults?.bool(forKey: "isOn") ?? false
-        sharedDefaults?.set(!current, forKey: "isOn")
+        let current = sharedDefaults?.bool(forKey: WidgetConstants.Keys.isOn) ?? false
+        sharedDefaults?.set(!current, forKey: WidgetConstants.Keys.isOn)
         sharedDefaults?.synchronize() // 保证立刻写入
         updateLabel()
     }
     
     @objc func updateLabel() {
-        let isOn = sharedDefaults?.bool(forKey: "isOn") ?? false
+        let isOn = sharedDefaults?.bool(forKey: WidgetConstants.Keys.isOn) ?? false
         testLabel.text = isOn ? "已开锁" : "已锁定"
         
         //主 App 修改状态后想让 Widget 立即刷新：
@@ -110,4 +113,3 @@ class ViewController: UIViewController {
     }
 
 }
-

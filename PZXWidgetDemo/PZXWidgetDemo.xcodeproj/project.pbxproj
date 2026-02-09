@@ -37,22 +37,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		896537792F3975E90075D5A9 /* PZXWidgetDemo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = PZXWidgetDemo.xcodeproj; sourceTree = "<group>"; };
 		89824CF52F3466A300EA1A9B /* PZXWidgetDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PZXWidgetDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89824D112F3466D300EA1A9B /* PZXWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PZXWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		89824D132F3466D300EA1A9B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		89824D152F3466D300EA1A9B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		89EA4E7F2F357ED500CF6D8F /* PZXWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PZXWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		89824CF72F3466A300EA1A9B /* PZXWidgetDemo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = PZXWidgetDemo;
-			sourceTree = "<group>";
-		};
-		89824D172F3466D300EA1A9B /* PZXWidget */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PZXWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -77,12 +72,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8965377B2F3975E90075D5A9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		89824CEC2F3466A300EA1A9B = {
 			isa = PBXGroup;
 			children = (
-				89EA4E7F2F357ED500CF6D8F /* PZXWidgetExtension.entitlements */,
 				89824CF72F3466A300EA1A9B /* PZXWidgetDemo */,
-				89824D172F3466D300EA1A9B /* PZXWidget */,
 				89824D122F3466D300EA1A9B /* Frameworks */,
 				89824CF62F3466A300EA1A9B /* Products */,
 			);
@@ -145,9 +145,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				89824D172F3466D300EA1A9B /* PZXWidget */,
-			);
 			name = PZXWidgetExtension;
 			packageProductDependencies = (
 			);
@@ -185,6 +182,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 89824CF62F3466A300EA1A9B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8965377B2F3975E90075D5A9 /* Products */;
+					ProjectRef = 896537792F3975E90075D5A9 /* PZXWidgetDemo.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				89824CF42F3466A300EA1A9B /* PZXWidgetDemo */,

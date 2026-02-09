@@ -27,8 +27,9 @@ struct OpenUnlockIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult {
-        let defaults = UserDefaults(suiteName: "group.dd.work.exclusive4loncin")
-        defaults?.set(action ?? "unknown", forKey: "launch_action")
+        // 将 Action 写入 App Group，主 App 被唤起后读取并执行
+        let defaults = UserDefaults(suiteName: WidgetConstants.appGroupIdentifier)
+        defaults?.set(action ?? "unknown", forKey: WidgetConstants.Keys.launchAction)
         defaults?.synchronize()
         return .result()
     }
@@ -42,7 +43,7 @@ struct OpenAppIntent: AppIntent {
     //如果要打开App记得在主工程的Target - Compile Sources  Add 这个文件
     static var openAppWhenRun:Bool = true
     func perform() async throws -> some IntentResult {
-        NotificationCenter.default.post(name: Notification.Name("OpenAppNotification"), object: nil, userInfo: ["parameter": "specialParameter"])
+        NotificationCenter.default.post(name: .openAppNotification, object: nil, userInfo: ["parameter": "specialParameter"])
         return .result()
     }
 }

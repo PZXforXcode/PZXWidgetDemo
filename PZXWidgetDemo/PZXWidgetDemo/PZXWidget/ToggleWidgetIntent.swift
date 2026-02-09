@@ -12,7 +12,7 @@ struct ToggleWidgetIntent: AppIntent {
 
     static var title: LocalizedStringResource = "Toggle Widget"
 
-    @AppStorage("isOn", store: UserDefaults(suiteName:"group.dd.work.exclusive4loncin"))
+    @AppStorage(WidgetConstants.Keys.isOn, store: UserDefaults(suiteName: WidgetConstants.appGroupIdentifier))
     var isOn: Bool = false
 
     func perform() async throws -> some IntentResult {

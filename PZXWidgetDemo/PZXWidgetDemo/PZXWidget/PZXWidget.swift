@@ -105,7 +105,7 @@ struct MediumMotorWidgetView: View {
                     .buttonStyle(.plain)
 
                     // 闪灯按钮
-                    Button(intent: OpenUnlockIntent(action: "loncin_flash")) {
+                    Button(intent: OpenUnlockIntent(action: WidgetConstants.Actions.flash)) {
 
                         VStack(spacing: 3) {
                             Image(systemName: "light.beacon.max.fill")
@@ -163,7 +163,7 @@ struct MediumMotorWidgetView: View {
 struct PZXWidgetEntryView: View {
     let entry: Provider.Entry
     @Environment(\.widgetFamily) var family
-    @AppStorage("isOn", store: UserDefaults(suiteName: "group.dd.work.exclusive4loncin"))
+    @AppStorage(WidgetConstants.Keys.isOn, store: UserDefaults(suiteName: WidgetConstants.appGroupIdentifier))
     var isOn: Bool = false
 
     var body: some View {

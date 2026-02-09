@@ -34,9 +34,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-        let defaults = UserDefaults(suiteName: "group.dd.work.exclusive4loncin")
-        guard let action = defaults?.string(forKey: "launch_action") else { return }
-        defaults?.removeObject(forKey: "launch_action")
+        // 1. Widget 通过 App Group 把 Action 写入 UserDefaults
+        // 2. App 被唤起后在这里读取 Action 并分发业务
+        let defaults = UserDefaults(suiteName: WidgetConstants.appGroupIdentifier)
+        guard let action = defaults?.string(forKey: WidgetConstants.Keys.launchAction) else { return }
+        // 读取后立即移除，避免 App 再次激活时重复触发
+        defaults?.removeObject(forKey: WidgetConstants.Keys.launchAction)
         defaults?.synchronize()
         handleLaunchAction(action)
     }
@@ -52,14 +55,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         NotificationCenter.default
             .removeObserver(
                 self,
-                name: Notification.Name("OpenAppNotification"),
+                name: .openAppNotification,
                 object: nil
             )
         NotificationCenter.default
             .addObserver(
                 self,
                 selector: #selector(handleOpenAppNotification(_:)),
-                name: Notification.Name("OpenAppNotification"),
+                name: .openAppNotification,
                 object: nil
             )
     }
@@ -71,6 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     @objc private func handleOpenAppNotification(_ notification: Notification) {
+        // 这个示例用于演示 App Intent 通过通知触发 App 内部逻辑
         if let userInfo = notification.userInfo, let specialParameter = userInfo["parameter"] as? String {
             // 根据 specialParameter 处理页面跳转逻辑
             print("specialParameter = \(specialParameter)")
@@ -81,14 +85,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     private func handleLaunchAction(_ action: String) {
+        // 根据 Widget 传入的 Action 做业务分发
         switch action {
-        case "loncin_flash":
+        case WidgetConstants.Actions.flash:
             print("执行闪灯")
-            NotificationCenter.default.post(name: Notification.Name("TriggerFlashUI"), object: nil)
+            // 通过通知触发 UI，让业务逻辑与界面解耦
+            NotificationCenter.default.post(name: .triggerFlashUI, object: nil)
             
-        case "loncin_unlock":
+        case WidgetConstants.Actions.unlock:
             LockManager.shared.unlock()
-        case "loncin_lock":
+        case WidgetConstants.Actions.lock:
             LockManager.shared.lock()
         default:
             break
