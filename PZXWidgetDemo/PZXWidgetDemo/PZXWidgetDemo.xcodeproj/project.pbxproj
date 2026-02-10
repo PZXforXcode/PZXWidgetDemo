@@ -66,6 +66,13 @@
 			);
 			target = 89824CF42F3466A300EA1A9B /* PZXWidgetDemo */;
 		};
+		89F865052F3AB9EF008DEB99 /* Exceptions for "Share" folder in "PZXWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WidgetConstants.swift,
+			);
+			target = 89824D102F3466D300EA1A9B /* PZXWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -84,6 +91,14 @@
 				89824D272F3466D400EA1A9B /* Exceptions for "PZXWidget" folder in "PZXWidgetExtension" target */,
 			);
 			path = PZXWidget;
+			sourceTree = "<group>";
+		};
+		89F865032F3AB9C7008DEB99 /* Share */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				89F865052F3AB9EF008DEB99 /* Exceptions for "Share" folder in "PZXWidgetExtension" target */,
+			);
+			path = Share;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -111,6 +126,7 @@
 		89824CEC2F3466A300EA1A9B = {
 			isa = PBXGroup;
 			children = (
+				89F865032F3AB9C7008DEB99 /* Share */,
 				89EA4E7F2F357ED500CF6D8F /* PZXWidgetExtension.entitlements */,
 				89824CF72F3466A300EA1A9B /* PZXWidgetDemo */,
 				89824D172F3466D300EA1A9B /* PZXWidget */,
@@ -156,6 +172,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				89824CF72F3466A300EA1A9B /* PZXWidgetDemo */,
+				89F865032F3AB9C7008DEB99 /* Share */,
 			);
 			name = PZXWidgetDemo;
 			packageProductDependencies = (
