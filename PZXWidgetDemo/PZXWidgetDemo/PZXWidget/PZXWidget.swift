@@ -64,6 +64,9 @@ struct PZXSmallView: View {
 
 struct MediumMotorWidgetView: View {
     var isOn: Bool = false
+    
+    @AppStorage(WidgetConstants.Keys.timerDate, store: UserDefaults(suiteName: WidgetConstants.appGroupIdentifier))
+    var timerInterval: Double = 0
 
     var body: some View {
         HStack(alignment: .top) {
@@ -128,21 +131,31 @@ struct MediumMotorWidgetView: View {
             Spacer()
 
             // 右侧摩托车图片展示
-            ZStack {
-                // 背景光晕效果
-                Circle()
-                    .fill(Color.blue.opacity(0.2))
-                    .frame(width: 100, height: 100)
-                    .blur(radius: 20)
+            VStack(spacing: 2) {
+                ZStack {
+                    // 背景光晕效果
+                    Circle()
+                        .fill(Color.blue.opacity(0.2))
+                        .frame(width: 100, height: 100)
+                        .blur(radius: 20)
+                    
+                    Image(systemName: "motorcycle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 110, height: 80)
+                        .foregroundStyle(.linearGradient(colors: [.white, .gray], startPoint: .top, endPoint: .bottom))
+                        .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 2)
+                        // 轻微旋转增加动感
+                        .rotationEffect(.degrees(-5))
+                }
                 
-                Image(systemName: "motorcycle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 110, height: 80)
-                    .foregroundStyle(.linearGradient(colors: [.white, .gray], startPoint: .top, endPoint: .bottom))
-                    .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 2)
-                    // 轻微旋转增加动感
-                    .rotationEffect(.degrees(-5))
+                if timerInterval > 0 {
+                    //时间
+//                    Text(Date(timeIntervalSince1970: timerInterval), style: .relative)
+//                        .font(.system(size: 10))
+//                        .foregroundStyle(.white.opacity(0.8))
+//                        .multilineTextAlignment(.center)
+                }
             }
             .offset(x: 10, y: 15) // 调整位置使其更饱满
         }

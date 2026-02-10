@@ -20,6 +20,8 @@ struct WidgetConstants {
         static let launchAction = "launch_action"
         /// 用于存储开关状态
         static let isOn = "isOn"
+        /// 用于存储倒计时目标时间
+        static let timerDate = "timerDate"
     }
     
     /// Action Identifiers - Widget 按钮对应的操作标识

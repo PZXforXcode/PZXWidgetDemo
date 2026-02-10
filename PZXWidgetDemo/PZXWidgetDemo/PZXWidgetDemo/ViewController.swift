@@ -13,6 +13,9 @@ class ViewController: UIViewController {
             let testLabel = UILabel(frame: CGRect(x: 100, y: 100, width: 200, height: 50))
             //testlabel下面加个按钮
             let testButton = UIButton(frame: CGRect(x: 100, y: 150, width: 200, height: 50))
+    
+    // 刷新时间按钮
+    let refreshTimeButton = UIButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
 
     // 通过 App Group 共享状态，Widget 与 App 读写同一份数据
     let sharedDefaults = UserDefaults(suiteName: WidgetConstants.appGroupIdentifier)
@@ -40,8 +43,19 @@ class ViewController: UIViewController {
         //给按钮添加点击事件
         testButton.addTarget(self, action: #selector(testButtonClick), for: .touchUpInside)
         
+        // 配置刷新时间按钮
+        refreshTimeButton.setTitle("刷新时间", for: .normal)
+        refreshTimeButton.setTitleColor(UIColor.green, for: .normal)
+        refreshTimeButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        self.view.addSubview(refreshTimeButton)
+        refreshTimeButton.addTarget(self, action: #selector(refreshTimeButtonClick), for: .touchUpInside)
+        
         // 初始化 label 显示状态
         updateLabel()
+        
+        let now = Date()
+        sharedDefaults?.set(now.timeIntervalSince1970, forKey: WidgetConstants.Keys.timerDate)
+        sharedDefaults?.synchronize()
         
         // 监听 App 回到前台，刷新数据
         NotificationCenter.default.addObserver(self, selector: #selector(updateLabel), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -99,8 +113,19 @@ class ViewController: UIViewController {
         // 主 App 点击按钮也可以改变状态
         let current = sharedDefaults?.bool(forKey: WidgetConstants.Keys.isOn) ?? false
         sharedDefaults?.set(!current, forKey: WidgetConstants.Keys.isOn)
+        
         sharedDefaults?.synchronize() // 保证立刻写入
         updateLabel()
+    }
+    
+    @objc func refreshTimeButtonClick() {
+        // 设置计时起始点为当前时间，Widget 将显示“已过去 X 分钟”
+        let now = Date()
+        sharedDefaults?.set(now.timeIntervalSince1970, forKey: WidgetConstants.Keys.timerDate)
+        sharedDefaults?.synchronize()
+        
+        // 刷新 Widget
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     @objc func updateLabel() {
